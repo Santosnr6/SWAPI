@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     getAllCharacters();
     paginationSetup();
+
+    document.querySelector('#searchInput').addEventListener('input', updateAutoCompleteList);
 });
 
 async function getAllCharacters() {
@@ -122,4 +124,34 @@ async function renderHomeworld(url) {
     `;
 
     listRef.innerHTML = homeListContent;
+}
+
+function updateAutoCompleteList(event) {
+    console.log(event.target.value);
+
+    const autocompleteList = document.querySelector('#autocompleteList');
+    const userInput = event.target.value.toLowerCase();
+
+    const matchedCharacters = allCharacters.filter(character => character.name.toLowerCase().includes(userInput));
+    console.log(matchedCharacters);
+
+    autocompleteList.innerHTML = '';
+
+    let maxCounter = 10;
+    if(matchedCharacters.length < 10) {
+        maxCounter = matchedCharacters.length;
+    }
+
+    for(let i = 0; i < maxCounter; i++) {
+        const listItemRef = document.createElement('li');
+        listItemRef.textContent = matchedCharacters[i].name;
+        autocompleteList.appendChild(listItemRef);
+
+        listItemRef.addEventListener('click', () => {
+            renderPerson(matchedCharacters[i].url);
+            renderHomeworld(matchedCharacters[i].homeworld);
+            autocompleteList.innerHTML = '';
+        });
+    }
+
 }
