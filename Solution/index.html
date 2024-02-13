@@ -4,8 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapi</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="https://kit.fontawesome.com/f300007e95.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="content-wrapper">
+            <h1 class="page-header__title">
+                Star Wars<br>Catalogue
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <section class="main-section">
+        <div class="content-wrapper main-section__wrapper">
+
+            <!-- Characters Section -->
+            <section class="characters main-section__box">
+                <h2 class="characters__header">Characters</h2>
+                <ul class="characters__list" id="charactersList">
+                    <!-- <li class="characters__list-item">Luke Skywalker</li>
+                    <li class="characters__list-item">C3PO</li>
+                    <li class="characters__list-item">Han Solo</li>
+                    <li class="characters__list-item">Qui Gon Jinn</li>
+                    <li class="characters__list-item">Anakin Skywalker</li>
+                    <li class="characters__list-item">Leia Organa</li>
+                    <li class="characters__list-item">Obi Wan Kenobi</li>
+                    <li class="characters__list-item">Yoda</li> -->
+                </ul>
+                <div class="pagination-container">
+                    <i class="fa-solid fa-chevron-left pagination-btn" id="prevPageBtn"></i>
+                    <span class="page-indicator" id="pageIndicator">Sida 1</span>
+                    <i class="fa-solid fa-chevron-right pagination-btn" id="nextPageBtn"></i>
+                </div>
+            </section>
+
+            <!-- Details Section -->
+            <section class="details main-section__box">
+                <h2 class="details__header">Details</h2>
+                <div class="details__info">
+                    <!-- Person Details -->
+                    <article class="person-info">
+                        <h3 class="person-info__name" id="personName"></h3>
+                        <ul class="person-info__list" id="personInfoList">
+                            <!-- <li class="person-info__list-item">Height: 172 cm</li>
+                            <li class="person-info__list-item">Mass: 77 kg</li>
+                            <li class="person-info__list-item">Hair Color: Blonde</li>
+                            <li class="person-info__list-item">Skin Color: Fair</li>
+                            <li class="person-info__list-item">Eye Color: Blue</li>
+                            <li class="person-info__list-item">Birth Year 19BBY</li>
+                            <li class="person-info__list-item">Gender: Male</li> -->
+                        </ul>
+                    </article>
+
+                    <!-- Homeworld Details -->
+                    <article class="home-info">
+                        <h3 class="home-info__name" id="homeName"></h3>
+                        <ul class="home-info__list" id="homeInfoList">
+                            <!-- <li class="home-info__list-item">Rotation Period: 23h</li>
+                            <li class="home-info__list-item">Orbital Period: 304 days</li>
+                            <li class="home-info__list-item">Diameter: 10465 km</li>
+                            <li class="home-info__list-item">Climate: Arid</li>
+                            <li class="home-info__list-item">Gravity: 1 Standard</li>
+                            <li class="home-info__list-item">Terrain: Dessert</li> -->
+                        </ul>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </section>
+
+
+    <script type="module" src="./scripts/app.js"></script>
 </body>
 </html>
