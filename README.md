@@ -2,9 +2,6 @@
 ## Star Wars API Catalog
 ![](screen.png)
 
-## Mockup
-> [Star Wars Catalog Mockup PDF](star-wars-catalog-mockup.pdf)
-
 ## Webbtjänst
 SWAPI: The Star Wars API
 https://swapi.dev
