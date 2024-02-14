@@ -2,34 +2,31 @@
 
 import apiHandler from './apiHandler.js';
 import pagination from './pagination.js';
-
-const allCharacters = [];
+import characters from './characters.js';
 
 window.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Loaded');
 
-    getAllCharacters();
+    fetchCharacters();
     paginationSetup();
 
     document.querySelector('#searchInput').addEventListener('input', updateAutoCompleteList);
 });
 
-async function getAllCharacters() {
+async function fetchCharacters() {
     let nextUrl = 'https://swapi.dev/api/people/';
 
     while(nextUrl) {
         const data = await apiHandler.fetchData(nextUrl);
-
+        
         data.results.forEach(character => {
-            allCharacters.push(character);
+            characters.pushCharacter(character);
         });
 
         nextUrl = data.next;
     }
-    
-    console.log(allCharacters);
 
-    pagination.setNmbrOfPosts(allCharacters.length);
+    pagination.setNmbrOfPosts(characters.getCharacters().length);
     renderCharacters();
 }
 
@@ -38,12 +35,11 @@ function paginationSetup() {
     const nextRef = document.querySelector('#nextPageBtn');
 
     prevRef.addEventListener('click', () => {
-        console.log('previous');
         pagination.previousPage();
         renderCharacters();
     });
+    
     nextRef.addEventListener('click', () => {
-        console.log('next');
         pagination.nextPage();
         renderCharacters();
     });
@@ -54,7 +50,7 @@ function renderCharacters() {
     const itemsPerPage = 8;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedCharacters = allCharacters.slice(startIndex, endIndex);
+    const displayedCharacters = characters.getCharacters().slice(startIndex, endIndex);
 
     const listRef = document.querySelector('#charactersList');
     listRef.innerHTML = '';
@@ -74,23 +70,23 @@ function renderCharacters() {
             const listItemRefs = document.querySelectorAll('.characters__list-item');
             listItemRefs.forEach(ref => {
                 ref.classList.remove('active');
-            })
+            });
+
             event.target.classList.add('active');
 
-            renderPerson(displayedCharacters[i].url);
-            renderHomeworld(displayedCharacters[i].homeworld);
+            renderPersonDetails(displayedCharacters[i].url);
+            renderHomeworldDetails(displayedCharacters[i].homeworld);
         });
     }
-
     pagination.updatePaginationDisplay();
 }
 
-async function renderPerson(url) {
+async function renderPersonDetails(url) {
     const data = await apiHandler.fetchData(url);
 
-    console.log(data);
     const headRef = document.querySelector('#personName');
     headRef.textContent = data.name;
+
     const listRef = document.querySelector('#personInfoList');
 
     const personListContent = `
@@ -99,14 +95,14 @@ async function renderPerson(url) {
         <li class="person-info__list-item">Hair Color: ${data.hair_color}</li>
         <li class="person-info__list-item">Skin Color: ${data.skin_color}</li>
         <li class="person-info__list-item">Eye Color: ${data.eye_color}</li>
-        <li class="person-info__list-item">Birth Year ${data.birth_year}</li>
+        <li class="person-info__list-item">Birth Year: ${data.birth_year}</li>
         <li class="person-info__list-item">Gender: ${data.gender}</li>
     `;
 
     listRef.innerHTML = personListContent;
 }
 
-async function renderHomeworld(url) {
+async function renderHomeworldDetails(url) {
     const data = await apiHandler.fetchData(url);
     console.log(data);
 
@@ -129,13 +125,13 @@ async function renderHomeworld(url) {
 function updateAutoCompleteList(event) {
     console.log(event.target.value);
 
-    const autocompleteList = document.querySelector('#autocompleteList');
+    const autoCompleteList = document.querySelector('#autocompleteList');
     const userInput = event.target.value.toLowerCase();
 
-    const matchedCharacters = allCharacters.filter(character => character.name.toLowerCase().includes(userInput));
-    console.log(matchedCharacters);
+    const matchedCharacters = characters.getCharacters().filter(character => character.name.toLowerCase().includes(userInput));
+    console.log(matchedCharacters.length);
 
-    autocompleteList.innerHTML = '';
+    autoCompleteList.innerHTML = '';
 
     let maxCounter = 10;
     if(matchedCharacters.length < 10) {
@@ -145,13 +141,12 @@ function updateAutoCompleteList(event) {
     for(let i = 0; i < maxCounter; i++) {
         const listItemRef = document.createElement('li');
         listItemRef.textContent = matchedCharacters[i].name;
-        autocompleteList.appendChild(listItemRef);
+        autoCompleteList.appendChild(listItemRef);
 
         listItemRef.addEventListener('click', () => {
-            renderPerson(matchedCharacters[i].url);
-            renderHomeworld(matchedCharacters[i].homeworld);
-            autocompleteList.innerHTML = '';
+            renderPersonDetails(matchedCharacters[i].url);
+            renderHomeworldDetails(matchedCharacters[i].homeworld);
+            autoCompleteList.innerHTML = '';
         });
     }
-
 }
